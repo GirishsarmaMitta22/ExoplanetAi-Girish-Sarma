@@ -34,12 +34,14 @@ df['Stellar_Compatibility_Index'] = df['st_teff'] / 5778.0
 
 # --- 4. ONE-HOT ENCODING ---
 print("--- Step 4: Changing Text to Numbers ---")
-df_encoded = pd.get_dummies(df, columns=['st_spectype'])                                           # Convert 'st_spectype' into 0s and 1s so the AI can read it
+# Convert 'st_spectype' into 0s and 1s so the AI can read it
+df_encoded = pd.get_dummies(df, columns=['st_spectype'])
 
 # --- 5. NORMALIZATION (Scaling) ---
 print("--- Step 5: Scaling Numbers ---")
 # We want all numbers to be in a similar small range
-numeric_columns = df_encoded.select_dtypes(include=[np.number]).columns                            # Formula: (Value - Mean) / Standard Deviation
+# Formula: (Value - Mean) / Standard Deviation
+numeric_columns = df_encoded.select_dtypes(include=[np.number]).columns
 
 for col in numeric_columns:
     col_mean = df_encoded[col].mean()
@@ -49,11 +51,14 @@ for col in numeric_columns:
 
 # --- 6. VALIDATION & EXPORT ---
 print("--- Step 6: Final Check & Saving ---")
-print(df_encoded[['Habitability_Index', 'Stellar_Compatibility_Index']].describe())           # Print descriptive statistics (Validation)
+# Print descriptive statistics (Validation)
+print(df_encoded[['Habitability_Index', 'Stellar_Compatibility_Index']].describe())
 
+# Save a histogram (Visualization)
 df_encoded['Habitability_Index'].hist(bins=20)
-plt.title('Habitability Index Check')                                                           # Save a histogram (Visualization)
+plt.title('Habitability Index Check')
 plt.savefig('validation_chart.png')
 
 df_encoded.to_csv('exoplanet_data_processed.csv', index=False)
+
 
