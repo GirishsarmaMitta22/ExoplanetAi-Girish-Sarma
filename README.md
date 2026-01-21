@@ -52,9 +52,6 @@ Want to run this on your own machine? Here is the step-by-step:
     ```
     Your browser should automatically open up to the dashboard. If not, just click the link shown in your terminal.
 
-## ☁️ Deployment
-
-This app is ready to fly! It includes a `Procfile` and `requirements.txt` so you can easily deploy it to platforms like Heroku or Render.
 
 ## 👋 About the Author
 
