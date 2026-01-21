@@ -27,10 +27,10 @@ For the tech-savvy, here's what's under the hood:
 
 ## 🌍 Live Demo
 
-This project is deployed on **Heroku**! You can access the live application here:
+This project is deployed on **Heroku**!
 
--   **Prediction Tool**: [Launch App](https://exoplanetai-girish-sarma.herokuapp.com/)
--   **Interactive Dashboard**: [View Dashboard](https://exoplanetai-girish-sarma.herokuapp.com/dashboard)
+-   **Predict Webpage**: [Link](https://exoplanetai-girish-sarma.herokuapp.com/)
+-   **Dashboard Webpage**: [Link](https://exoplanetai-girish-sarma.herokuapp.com/dashboard)
 
 ## 🚀 Getting Started
 
