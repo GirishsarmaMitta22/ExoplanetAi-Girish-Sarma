@@ -53,9 +53,3 @@ Want to run this on your own machine? Here is the step-by-step:
     Your browser should automatically open up to the dashboard. If not, just click the link shown in your terminal.
 
 
-## 👋 About the Author
-
-This project was built by **Girish Sarma**. I'm passionate about space, AI, and building things that matter. If you have questions or want to contribute, feel free to reach out or open an issue on GitHub!
-
----
-*"Somewhere, something incredible is waiting to be known." - Carl Sagan*
