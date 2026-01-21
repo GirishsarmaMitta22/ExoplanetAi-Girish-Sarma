@@ -58,6 +58,8 @@ Want to run this on your own machine? Here is the step-by-step:
     ```bash
     python app.py
     ```
-    Your browser should automatically open up to the dashboard. If not, just click the link shown in your terminal.
+    Your browser should automatically open up to the dashboard. If not, just click the link shown in your terminal or use the links below:
+    -   **Predict Webpage**: http://127.0.0.1:5000/
+    -   **Dashboard Webpage**: http://127.0.0.1:5000/dashboard
 
 
