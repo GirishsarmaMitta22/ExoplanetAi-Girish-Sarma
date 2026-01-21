@@ -24,6 +24,14 @@ For the tech-savvy, here's what's under the hood:
 -   **Visuals**: Plotly (for those interactive charts).
 -   **Data Processing**: Pandas & NumPy.
 
+
+## 🌍 Live Demo
+
+This project is deployed on **Heroku**! You can access the live application here:
+
+-   **Prediction Tool**: [Launch App](https://exoplanetai-girish-sarma.herokuapp.com/)
+-   **Interactive Dashboard**: [View Dashboard](https://exoplanetai-girish-sarma.herokuapp.com/dashboard)
+
 ## 🚀 Getting Started
 
 Want to run this on your own machine? Here is the step-by-step:
