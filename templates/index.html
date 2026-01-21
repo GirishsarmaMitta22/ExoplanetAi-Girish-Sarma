@@ -1,0 +1,145 @@
+{% extends "base.html" %}
+
+{% block title %}Exoplanet AI - Predict Habitability{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="text-center mb-5">
+            <h1 class="display-4">Habitability Predictor</h1>
+            <p class="lead">Enter planetary parameters to discover potentially habitable worlds.</p>
+        </div>
+
+        <div class="card p-4 shadow-lg">
+            <form id="predictionForm">
+                <div class="row g-3">
+                    <div class="col-md-6">
+                        <label for="pl_bmasse" class="form-label">Planet Mass (Earth Mass)</label>
+                        <input type="number" step="any" class="form-control" id="pl_bmasse" name="pl_bmasse"
+                            placeholder="e.g. 1.0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pl_rade" class="form-label">Planet Radius (Earth Radius)</label>
+                        <input type="number" step="any" class="form-control" id="pl_rade" name="pl_rade"
+                            placeholder="e.g. 1.0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pl_eqt" class="form-label">Equilibrium Temp (K)</label>
+                        <input type="number" step="any" class="form-control" id="pl_eqt" name="pl_eqt"
+                            placeholder="e.g. 255" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="pl_orbper" class="form-label">Orbital Period (Days)</label>
+                        <input type="number" step="any" class="form-control" id="pl_orbper" name="pl_orbper"
+                            placeholder="e.g. 365.25" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="st_teff" class="form-label">Stellar Effective Temp (K)</label>
+                        <input type="number" step="any" class="form-control" id="st_teff" name="st_teff"
+                            placeholder="e.g. 5780" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="st_mass" class="form-label">Stellar Mass (Solar Mass)</label>
+                        <input type="number" step="any" class="form-control" id="st_mass" name="st_mass"
+                            placeholder="e.g. 1.0" required>
+                    </div>
+                    <div class="col-md-6">
+                        <label for="st_met" class="form-label">Stellar Metallicity (dex)</label>
+                        <input type="number" step="any" class="form-control" id="st_met" name="st_met"
+                            placeholder="e.g. 0.0" required>
+                    </div>
+                    <div class="col-12 text-center mt-4">
+                        <button type="submit" class="btn btn-primary btn-lg px-5">Analyze Planet</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <!-- Result Section -->
+        <div id="resultSection" class="mt-5 text-center d-none">
+            <div class="card p-5">
+                <h2 id="predictionResult" class="mb-3"></h2>
+                <div class="progress mb-3" style="height: 25px;">
+                    <div id="confidenceBar" class="progress-bar progress-bar-striped progress-bar-animated bg-success"
+                        role="progressbar" style="width: 0%"></div>
+                </div>
+                <p id="confidenceText" class="lead"></p>
+                <div id="loadingSpinner" class="spinner-border text-primary d-none" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    document.getElementById('predictionForm').addEventListener('submit', async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(this);
+        const data = Object.fromEntries(formData.entries());
+
+        // Convert strings to floats
+        for (const key in data) {
+            data[key] = parseFloat(data[key]);
+        }
+
+        const resultSection = document.getElementById('resultSection');
+        const predictionResult = document.getElementById('predictionResult');
+        const confidenceBar = document.getElementById('confidenceBar');
+        const confidenceText = document.getElementById('confidenceText');
+        const submitBtn = this.querySelector('button[type="submit"]');
+
+        // UI Loading State
+        submitBtn.disabled = true;
+        submitBtn.innerText = "Analyzing...";
+        resultSection.classList.add('d-none');
+
+        try {
+            const response = await fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            });
+
+            const result = await response.json();
+
+            if (response.ok) {
+                resultSection.classList.remove('d-none');
+
+                predictionResult.innerText = `Prediction: ${result.prediction}`;
+
+                // Extract numeric confidence (remove %)
+                let confVal = parseFloat(result.confidence);
+                if (isNaN(confVal)) confVal = 0;
+
+                confidenceBar.style.width = `${confVal}%`;
+                confidenceText.innerText = `Confidence Score: ${result.confidence}`;
+
+                if (result.prediction === "Habitable") {
+                    predictionResult.style.color = "#66fcf1";
+                    confidenceBar.classList.remove('bg-danger');
+                    confidenceBar.classList.add('bg-success');
+                } else {
+                    predictionResult.style.color = "#ff4d4d";
+                    confidenceBar.classList.remove('bg-success');
+                    confidenceBar.classList.add('bg-danger');
+                }
+            } else {
+                alert("Error: " + result.error || "Unknown error occurred");
+            }
+
+        } catch (error) {
+            console.error("Error:", error);
+            alert("Failed to connect to the server.");
+        } finally {
+            submitBtn.disabled = false;
+            submitBtn.innerText = "Analyze Planet";
+        }
+    });
+</script>
+{% endblock %}

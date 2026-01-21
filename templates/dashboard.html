@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block title %}Exoplanet AI - Dashboard{% endblock %}
+
+{% block head %}
+<!-- Plotly.js -->
+<script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+{% endblock %}
+
+{% block content %}
+<div class="row mb-5">
+    <div class="col-12 text-center">
+        <h1 class="display-4">Exoplanet Insights Dashboard</h1>
+        <p class="lead">Visualizing the characteristics of the universe.</p>
+    </div>
+</div>
+
+<!-- Charts Row 1 -->
+<div class="row mb-5">
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white border-bottom-0">
+                <h4 class="mb-0">Feature Importance</h4>
+            </div>
+            <div class="card-body">
+                <div id="featureImportanceChart"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white border-bottom-0">
+                <h4 class="mb-0">Habitability Score Distribution</h4>
+            </div>
+            <div class="card-body">
+                <div id="habitabilityDistChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Charts Row 2 -->
+<div class="row mb-5">
+    <div class="col-12 mb-4">
+        <div class="card shadow">
+            <div class="card-header bg-dark text-white border-bottom-0">
+                <h4 class="mb-0">Star vs. Planet Parameters</h4>
+            </div>
+            <div class="card-body">
+                <div id="correlationChart"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Export Section -->
+<div class="row mb-5 text-center">
+    <div class="col-12">
+        <a href="/export-report" class="btn btn-success btn-lg">
+            <i class="bi bi-file-earmark-excel"></i> Download Top Candidates (Excel)
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Fetch and render charts on load
+    document.addEventListener('DOMContentLoaded', async () => {
+        try {
+            const response = await fetch('/dashboard-data');
+            const data = await response.json();
+
+            if (data.error) {
+                alert("Error loading dashboard data: " + data.error);
+                return;
+            }
+
+            // Render Feature Importance
+            Plotly.newPlot('featureImportanceChart', JSON.parse(data.feature_importance), {});
+
+            // Render Habitability Distribution
+            Plotly.newPlot('habitabilityDistChart', JSON.parse(data.habitability_dist), {});
+
+            // Render Correlation
+            Plotly.newPlot('correlationChart', JSON.parse(data.correlation), {});
+
+        } catch (error) {
+            console.error("Dashboard error:", error);
+        }
+    });
+</script>
+{% endblock %}

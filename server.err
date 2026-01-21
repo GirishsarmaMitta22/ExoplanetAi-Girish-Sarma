@@ -1,0 +1,4 @@
+Traceback (most recent call last):
+  File "C:\Users\girsh\OneDrive\Desktop\Exoplanet Ai\app.py", line 6, in <module>
+    import plotly
+ModuleNotFoundError: No module named 'plotly'
